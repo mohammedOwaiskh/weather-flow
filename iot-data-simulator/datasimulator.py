@@ -1,3 +1,5 @@
+import datetime
+from dateutil import parser
 from faker import Faker
 from confluent_kafka import Producer
 import random
@@ -11,7 +13,6 @@ fake = Faker()
 BOOTSTRAP_SERVERS = "localhost:9092"  # Update with your Kafka server address
 
 
-# Kafka config
 def get_kafka_config():
     return {
         # User-specific properties that you must set
@@ -23,11 +24,23 @@ def get_kafka_config():
 
 # Function to generate IoT sensor data
 def generate_iot_data():
+    datetime_this_decade_str = fake.date_time_this_year(before_now=True)
+    timestamp = parser.parse(datetime_this_decade_str)
     return {
         "device_id": f"sensor_{random.randint(1, 100)}",
-        "temperature": round(random.uniform(20.0, 35.0), 2),  # Temperature in Celsius
-        "humidity": random.randint(30, 90),  # Humidity in percentage
-        "timestamp": fake.iso8601(),  # ISO 8601 formatted timestamp
+        "temperature": round(random.uniform(-10.0, 50.0), 2),  # Temperature in Celsius
+        "humidity": random.randint(10, 100),  # Humidity in percentage
+        "pressure": round(random.uniform(950, 1050), 2),  # Atmospheric pressure in hPa
+        "wind_speed": round(random.uniform(0.0, 30.0), 2),  # Wind speed in m/s
+        "rainfall": round(random.uniform(0.0, 200.0), 2),  # Rainfall in mm
+        "location": {
+            "latitude": round(random.uniform(-90.0, 90.0), 6),  # Latitude
+            "longitude": round(random.uniform(-180.0, 180.0), 6),  # Longitude
+        },
+        "device_status": random.choice(
+            ["active", "inactive", "maintenance"]
+        ),  # Status of the IoT device
+        "timestamp": timestamp.isoformat(),  # ISO 8601 formatted timestamp
     }
 
 
