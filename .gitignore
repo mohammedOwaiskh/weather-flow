@@ -172,3 +172,8 @@ cython_debug/
 
 
 .vscode/* 
+
+
+# Output and Checkpoint
+output-files/*
+checkpoint/*

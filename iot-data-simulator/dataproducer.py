@@ -27,6 +27,7 @@ def produce_to_kafka(producer: Producer, topic, interval=1):
     print(f"Producing data to Kafka topic: {topic}")
     try:
         while True:
+            # for _ in range(1):
             data: dict = generate_iot_data()
             json_data = json.dumps(data)
             print(f"Produced: {json_data}")
