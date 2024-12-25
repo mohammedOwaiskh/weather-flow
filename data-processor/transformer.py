@@ -13,7 +13,6 @@ from pyspark.sql.types import (
     TimestampType,
 )
 from sparkutils import get_spark_session
-import s3fs
 
 
 def transform_kafka_data(kafka_df: DataFrame) -> DataFrame:
@@ -67,6 +66,6 @@ if __name__ == "__main__":
 
         # write_to_console(iot_data_df)
 
-        write_to_csv(iot_data_df, "s3://weather-flow-output/output-files")
+        write_to_csv(iot_data_df, "s3a://weather-flow-output/output-files")
     except KeyboardInterrupt:
         print("\nStopped processing data")
