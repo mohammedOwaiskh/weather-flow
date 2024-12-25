@@ -67,6 +67,6 @@ if __name__ == "__main__":
 
         # write_to_console(iot_data_df)
 
-        write_to_csv(iot_data_df, "s3:/weather-flow-output/output-files")
+        write_to_csv(iot_data_df, "s3://weather-flow-output/output-files")
     except KeyboardInterrupt:
         print("\nStopped processing data")
