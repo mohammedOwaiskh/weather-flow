@@ -10,6 +10,6 @@ def write_to_console(df: DataFrame):
 def write_to_csv(df: DataFrame, location: str, checkpoint: str = "checkpoint"):
     df.writeStream.format("csv").option("checkpointLocation", f"{checkpoint}/").option(
         "path", f"{location}/"
-    ).outputMode("complete").trigger(
-        processingTime="5 seconds"
+    ).option("header", True).outputMode("append").trigger(
+        processingTime="10 seconds"
     ).start().awaitTermination()

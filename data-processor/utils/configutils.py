@@ -26,8 +26,3 @@ def read_application_config(
 
 def get_aws_config(key: str) -> str:
     return read_application_config(key, section="AWS_CONFIG")
-
-
-if __name__ == "__main__":
-    print(get_aws_config("aws.access.key"))
-    print(get_spark_config())

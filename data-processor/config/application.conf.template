@@ -1,4 +1,4 @@
-[DEFAULT]
+[APP_DEFAULT]
 ## If deploying on AWS - write the profile as 'aws'
 app.env.profile=dev
 
