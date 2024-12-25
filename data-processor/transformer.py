@@ -1,8 +1,5 @@
-import json
-
 from dataconsumer import create_kafka_df
-from writer import write_to_console, write_to_csv
-from pyspark.sql import DataFrame, SparkSession
+from pyspark.sql import DataFrame
 from pyspark.sql.functions import col, from_json
 from pyspark.sql.types import (
     DecimalType,
@@ -13,6 +10,7 @@ from pyspark.sql.types import (
     TimestampType,
 )
 from sparkutils import get_spark_session
+from writer import write_to_csv
 
 
 def transform_kafka_data(kafka_df: DataFrame) -> DataFrame:
@@ -55,17 +53,17 @@ def get_data_schema():
     )
 
 
-if __name__ == "__main__":
-
+def transform():
     try:
         spark = get_spark_session()
 
         kafka_df = create_kafka_df(spark)
-
         iot_data_df = transform_kafka_data(kafka_df)
-
         # write_to_console(iot_data_df)
-
         write_to_csv(iot_data_df, "s3a://weather-flow-output/output-files")
     except KeyboardInterrupt:
         print("\nStopped processing data")
+
+
+if __name__ == "__main__":
+    transform()

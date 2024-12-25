@@ -1,14 +1,23 @@
-from pyspark import SparkConf
+from utils.configutils import get_aws_config, get_spark_config
 from pyspark.sql import SparkSession
 
 
+ACCESS_KEY_ID = get_aws_config("aws.access.key")
+SECRET_ACCESS_KEY = get_aws_config("aws.secret.key")
+
+
 def get_spark_session() -> SparkSession:
-    conf = SparkConf()
-    conf.setMaster("local")
-    conf.set("spark.streaming.stopGracefullyOnShutdown", True)
-    conf.set(
-        "spark.jars.packages",
-        "org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.0,com.amazonaws:aws-java-sdk-pom:1.10.34,org.apache.hadoop:hadoop-aws:2.7.2",
+    conf = get_spark_config()
+    spark: SparkSession = SparkSession.builder.config(conf=conf).getOrCreate()
+    hadoopConfig = spark.sparkContext._jsc.hadoopConfiguration()
+    hadoopConfig.set(
+        "fs.s3a.aws.credentials.provider",
+        "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider",
     )
-    conf.set("spark.sql.shuffle.partitions", 4)
-    return SparkSession.builder.appName("WeatherFlow").config(conf=conf).getOrCreate()
+    hadoopConfig.set("fs.s3a.access.key", ACCESS_KEY_ID)
+    hadoopConfig.set("fs.s3a.secret.key", SECRET_ACCESS_KEY)
+    return spark
+
+
+if __name__ == "__main__":
+    get_spark_config()
