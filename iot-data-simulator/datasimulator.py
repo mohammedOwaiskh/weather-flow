@@ -7,7 +7,14 @@ fake = Faker()
 
 
 # Function to generate IoT sensor data
-def generate_iot_data():
+def generate_iot_data() -> dict:
+    """Generates simulated IoT sensor data with random values.
+
+    Creates a dictionary representing a synthetic weather sensor measurement with randomized parameters. Provides realistic, varied data for testing and simulation purposes.
+
+    Returns:
+        dict: A dictionary containing simulated IoT sensor data with device ID, environmental measurements, location, status, and timestamp.
+    """
     datetime_this_decade = fake.date_time_this_year(before_now=True)
     return {
         "device_id": f"sensor_{random.randint(1, 100)}",

@@ -14,10 +14,19 @@ from writer import write_to_csv
 
 
 def transform_kafka_data(kafka_df: DataFrame) -> DataFrame:
+    """Transforms raw Kafka streaming data into a structured DataFrame.
+
+    Converts Kafka message values from JSON to a predefined schema and flattens the location data. Prepares the streaming data for further processing by standardizing its structure.
+
+    Args:
+        kafka_df: Incoming Spark DataFrame containing raw Kafka messages.
+
+    Returns:
+        DataFrame: A transformed DataFrame with parsed and flattened IoT sensor data.
+    """
     raw_df = kafka_df.withColumn("value", kafka_df.value.cast(StringType())).select(
         "value"
     )
-
     data_schema = get_data_schema()
     iot_data_json_df = raw_df.withColumn("value", from_json("value", data_schema))
     iot_data_parsed = iot_data_json_df.select(col("value.*"))
@@ -29,7 +38,14 @@ def transform_kafka_data(kafka_df: DataFrame) -> DataFrame:
     )
 
 
-def get_data_schema():
+def get_data_schema() -> StructType:
+    """Defines the schema for weather device data.
+
+    Creates a structured schema representing the data model for weather device measurements. Provides a consistent and well-defined structure for parsing and validating incoming streaming data.
+
+    Returns:
+        StructType: A Spark DataFrame schema with fields for device measurements and metadata.
+    """
     return StructType(
         [
             StructField("device_id", StringType()),
@@ -54,6 +70,13 @@ def get_data_schema():
 
 
 def transform():
+    """Orchestrates the end-to-end data processing workflow for IoT sensor data.
+
+    Coordinates the ingestion, transformation, and writing of streaming sensor data from Kafka to CSV storage. Manages the entire data processing pipeline with error handling for graceful interruption.
+
+    Raises:
+        KeyboardInterrupt: Allows for clean termination of the data processing workflow.
+    """
     try:
         spark = get_spark_session()
 
