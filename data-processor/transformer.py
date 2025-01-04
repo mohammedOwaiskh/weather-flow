@@ -30,7 +30,6 @@ def transform_kafka_data(kafka_df: DataFrame) -> DataFrame:
     data_schema = get_data_schema()
     iot_data_json_df = raw_df.withColumn("value", from_json("value", data_schema))
     iot_data_parsed = iot_data_json_df.select(col("value.*"))
-
     return (
         iot_data_parsed.withColumn("longitude", col("location.longitude"))
         .withColumn("latitude", col("location.latitude"))
