@@ -16,18 +16,18 @@
 
 ## 📌 Table of Contents
 
-- [Overview](#-overview)
-- [Architecture](#-architecture)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [Pipeline Walkthrough](#-pipeline-walkthrough)
-- [Getting Started](#-getting-started)
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Pipeline Walkthrough](#pipeline-walkthrough)
+- [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
   - [Configuration](#configuration)
   - [Running the Pipeline](#running-the-pipeline)
-- [Design Decisions](#-design-decisions)
-- [Future Improvements](#-future-improvements)
+- [Design Decisions](#design-decisions)
+- [Future Improvements](#future-improvements)
 
 ---
 
@@ -188,7 +188,7 @@ pip install -r requirements.txt
 
 ### Configuration
 
-Create a `.env` file at the root (see `.env.example`):
+Create a `.env` file at the root of the project with the following variables:
 
 ```env
 # Kafka
@@ -210,7 +210,8 @@ EMIT_INTERVAL_SECONDS=2
 
 **Step 1 — Start Kafka (if not already running):**
 ```bash
-# Using Docker Compose (recommended)
+# A docker-compose.yml is expected at the project root with `zookeeper` and `kafka` services.
+# If you don't have one yet, see the Confluent Platform quick-start or use the Bitnami Kafka image.
 docker-compose up -d zookeeper kafka
 ```
 
@@ -238,7 +239,9 @@ airflow scheduler &
 airflow webserver --port 8080
 ```
 
-Then navigate to `http://localhost:8080`, enable and trigger the `weather_pipeline` DAG.
+Then navigate to `http://localhost:8080`, enable and trigger the `weather_pipeline` DAG (defined in `dags/weather_pipeline.py`).
+
+> **Note:** Make sure Airflow's `dags_folder` is pointing at the `dags/` directory in this repo, or copy `dags/weather_pipeline.py` into your Airflow home's DAG folder.
 
 ---
 
