@@ -188,7 +188,9 @@ pip install -r requirements.txt
 
 ### Configuration
 
-Create a `.env` file at the root of the project with the following variables:
+Create a `.env` file at the root of the project with the following variables.  
+**Important:** Ensure `.env` is listed in your `.gitignore` so it is never committed to version control.  
+Never commit or share real `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` values; use placeholders locally and secure secrets via your deployment platform.
 
 ```env
 # Kafka
